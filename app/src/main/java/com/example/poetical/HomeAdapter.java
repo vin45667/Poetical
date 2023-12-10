@@ -64,6 +64,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.viewsamt.setText(poemContents.getViewamount());
         holder.audiourl.setText(poemContents.getAudioUrl());
         holder.type.setText(poemContents.getType());
+        holder.key.setText(poemContents.getPostKey());
         if(poemContents.getVerified().equals("yes")){
             holder.verif.setVisibility(View.VISIBLE);
         }
@@ -111,6 +112,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             context.startActivity(intent);
         });
         holder.layout.setOnClickListener(v -> {
+            increaseViewAmt(holder.key.getText().toString());
             Intent intent = new Intent(context, ViewPoemActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("name", holder.name.getText().toString().trim());
             intent.putExtra("photo", holder.photo.getText().toString().trim());
@@ -139,12 +141,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         CircleImageView profileImage;
         ConstraintLayout waveLayout;
         ImageView verif;
-        TextView name, title, content, email, photo,verifiedtxt,audiourl,likeamt,viewsamt,type;
+        TextView name, title, content, email, photo,verifiedtxt,audiourl,likeamt,viewsamt,type,key;
         ConstraintLayout layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.name);
+            key=itemView.findViewById(R.id.key);
             type=itemView.findViewById(R.id.type);
             layout=itemView.findViewById(R.id.layout);
             profileImage = itemView.findViewById(R.id.profileImage);
@@ -188,6 +191,27 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         });
     }
     public void increaseViewAmt(String key){
+        DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("All Poems");
+        int incrementValue = 1;
+        postsRef.child(key).child("viewamount").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Get the current value
+                    String currentValue = dataSnapshot.getValue(String.class);
+
+                    // Increment the value
+                    int newValue = Integer.parseInt( currentValue) + incrementValue;
+                    // Update the value in the database
+                    postsRef.child(key).child("viewamount").setValue(newValue);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
 
     }
 }

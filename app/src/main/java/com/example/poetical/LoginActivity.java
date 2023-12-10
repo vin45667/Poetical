@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                                 fileOps.writeToIntFile("userlog.txt", "1");
                                 getUserDetails();
                                 //save all details to users database
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                                startActivity(new Intent(LoginActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                             } else if (task.getException().getMessage().contains("There is no user record corresponding to this identifier")) {
                                 email.setEnabled(true);
                                 password.setEnabled(true);

@@ -31,7 +31,7 @@ public class FileOps {
         }
     }
     public String readIntStorage(String fileName){
-        String contents=" ";
+        String contents="";
         try {
             File file = new File(context.getFilesDir(), fileName);
             FileInputStream inputStream = new FileInputStream(file);

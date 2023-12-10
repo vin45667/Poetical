@@ -47,7 +47,7 @@ ViewPager viewPager;
             else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
                 builder.setTitle("Login")
-                        .setMessage("You need to login to your account to participate on Poetical")
+                        .setMessage("You need to login to your account to post on Poetical")
                         .setPositiveButton("Login", (dialog, id) -> {
                             dialog.cancel();
                             startActivity(new Intent(HomeActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));

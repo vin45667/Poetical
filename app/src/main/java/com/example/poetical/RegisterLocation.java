@@ -31,6 +31,7 @@ public class RegisterLocation extends AppCompatActivity {
     static int LOCATION_PERMISSION_REQUEST_CODE = 101;
     Button continuebtn;
     String usercity, userstate;
+    double latitude,longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +49,25 @@ public class RegisterLocation extends AppCompatActivity {
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, location -> {
                         if (location != null) {
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
 
                             // Now, you have the user's coordinates; proceed to reverse geocoding.
                             getAddressFromCoordinates(latitude, longitude);
+                        }
+                        else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setTitle("Location Access");
+                            builder.setMessage("Please turn on location");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Request the permission again
+                                    startActivity(new Intent(RegisterLocation.this, RegisterLocation.class));
+                                    finish();
+                                }
+                            });
+                            builder.show();
                         }
                     })
                     .addOnFailureListener(this, e -> {
@@ -75,7 +90,18 @@ public class RegisterLocation extends AppCompatActivity {
             usercity = city.getText().toString().trim();
             userstate = state.getText().toString().trim();
             if (usercity.equals("") || userstate.equals("")) {
-                Toast.makeText(this, "Please allow location", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Location Access");
+                builder.setMessage("Please allow and turn on location");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Request the permission again
+                        startActivity(new Intent(RegisterLocation.this, RegisterLocation.class));
+                        finish();
+                    }
+                });
+                builder.show();
             } else {
                 fileOps.writeToIntFile("usercity.txt", usercity);
                 fileOps.writeToIntFile("userstate.txt", userstate);
@@ -99,7 +125,7 @@ public class RegisterLocation extends AppCompatActivity {
                 this.country.setText(country);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

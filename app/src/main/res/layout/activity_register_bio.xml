@@ -87,10 +87,8 @@
                 android:layout_marginRight="24dp"
                 android:padding="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:backgroundTint="#ff4081"
                 android:elevation="24dp"
                 android:text="Continue"
-                android:textColor="@android:color/white"
                 android:textStyle="bold" />
 
         </LinearLayout>

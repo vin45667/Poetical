@@ -67,7 +67,7 @@ public class RegisterBio extends AppCompatActivity {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterBio.this);
                                     builder.setTitle("Verify Email").setMessage("You would receive an email shortly, please use that to set your password and log in to your account").setPositiveButton("OK", (dialog, id) -> {
                                         dialog.cancel();
-                                        startActivity(new Intent(RegisterBio.this, LoginActivity.class));
+                                        startActivity(new Intent(RegisterBio.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
                                     });
                                     AlertDialog dialog = builder.create();
                                     dialog.show();

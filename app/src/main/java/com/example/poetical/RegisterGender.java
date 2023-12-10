@@ -53,7 +53,7 @@ public class RegisterGender extends AppCompatActivity {
     public void maleButtonSelected() {
         male = true;
         female=false;
-        maleSelectionButton.setBackgroundColor(Color.parseColor("#FF4081"));
+        maleSelectionButton.setBackgroundColor(Color.parseColor("#FF0F7CD3"));
         maleSelectionButton.setAlpha(1.0f);
         femaleSelectionButton.setAlpha(.5f);
         femaleSelectionButton.setBackgroundColor(Color.GRAY);
@@ -64,7 +64,7 @@ public class RegisterGender extends AppCompatActivity {
     public void femaleButtonSelected() {
         male = false;
         female=true;
-        femaleSelectionButton.setBackgroundColor(Color.parseColor("#FF4081"));
+        femaleSelectionButton.setBackgroundColor(Color.parseColor("#FF0F7CD3"));
         femaleSelectionButton.setAlpha(1.0f);
         maleSelectionButton.setAlpha(.5f);
         maleSelectionButton.setBackgroundColor(Color.GRAY);

@@ -71,7 +71,7 @@ public class CoverPicActivity extends AppCompatActivity {
                 Toast.makeText(CoverPicActivity.this, "Please add a cover image", Toast.LENGTH_SHORT).show();
             }
             else{
-                startActivity(new Intent(this, CoverPicActivity.class));
+                startActivity(new Intent(this, RegisterBio.class));
             }
         });
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {

@@ -206,6 +206,7 @@ public class PoidActivity extends AppCompatActivity {
         firebaseDatabase= FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference("All Poems");
         String key=databaseReference.push().getKey();
+        dataPoems.setPostKey(key);
         valueEventListener=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
