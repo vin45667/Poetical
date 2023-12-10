@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Poetical" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#FF0F7CD3</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+</resources>

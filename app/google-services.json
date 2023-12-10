@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "440468136272",
+    "firebase_url": "https://poetical-b15ec-default-rtdb.firebaseio.com",
+    "project_id": "poetical-b15ec",
+    "storage_bucket": "poetical-b15ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440468136272:android:41795fac035d9b25eecc55",
+        "android_client_info": {
+          "package_name": "com.nerdyapps.poetical"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF5-3n4jrMyFq6idSmdZjH_oHwcG1aYdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
