@@ -180,11 +180,10 @@ public class PodioActivity extends AppCompatActivity {
         dataPoems.setContent("");
         dataPoems.setPhotoUrl(fileOps.readIntStorage("profileimage.txt"));
         dataPoems.setAudioUrl(uri);
-        dataPoems.setStars("0");
         dataPoems.setType("podio");
         dataPoems.setLikeamount("0");
         dataPoems.setViewamount("0");
-        dataPoems.setVerified(fileOps.readIntStorage("userverified.txt"));
+        dataPoems.setVerified(fileOps.readIntStorage("userverif.txt"));
         firebaseDatabase= FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference("All Poems");
         String key=databaseReference.push().getKey();

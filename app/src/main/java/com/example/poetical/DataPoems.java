@@ -9,11 +9,20 @@ public class DataPoems {
     String postKey;
     String audioUrl="";
     String photoUrl;
+    String photoUrl2;
     String stars="";
     String verified="";
 
     String likeamount;
     String viewamount;
+
+    public String getPhotoUrl2() {
+        return photoUrl2;
+    }
+
+    public void setPhotoUrl2(String photoUrl2) {
+        this.photoUrl2 = photoUrl2;
+    }
 
     public String getPostKey() {
         return postKey;

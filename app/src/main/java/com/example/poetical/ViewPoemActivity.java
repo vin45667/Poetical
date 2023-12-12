@@ -3,6 +3,7 @@ package com.example.poetical;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,7 +35,7 @@ public class ViewPoemActivity extends AppCompatActivity {
     int duration, currentProgress;
     CircleImageView profileImage;
     ConstraintLayout waveLayout;
-    ImageView pauseplay, star;
+    ImageView pauseplay, star,verif;
     SeekBar seekBar;
     String audioUrl;
     ProgressBar progressBar;
@@ -48,6 +49,7 @@ public class ViewPoemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_poem);
         handler = new Handler();
+        verif=findViewById(R.id.verif);
         start = findViewById(R.id.starttxt);
         end = findViewById(R.id.endtxt);
         viewamt = findViewById(R.id.viewsamt);
@@ -67,26 +69,35 @@ public class ViewPoemActivity extends AppCompatActivity {
         poemtitle.setText(getIntent().getStringExtra("title"));
         poemcontent.setText(getIntent().getStringExtra("content"));
         staramt.setText(getIntent().getStringExtra("likeamount"));
-        viewamt.setText(getIntent().getStringExtra("viewsamount"));
+        String viewamtst=getIntent().getStringExtra("viewsamount");
+        String verified=getIntent().getStringExtra("verif");
+        if(verified.equals("yes")){
+            verif.setVisibility(View.VISIBLE);
+        }
+        else{
+            verif.setVisibility(View.GONE);
+        }
+        int a=Integer.parseInt(viewamtst);
+        viewamt.setText(String.valueOf(a+1));
         FirebaseStorage storage = FirebaseStorage.getInstance();
         // Get a reference to the image in Firebase Storage
-//        StorageReference storageRef = storage.getReference();
-//        StorageReference imageRef = storageRef.child("images/" + getIntent().getStringExtra("photo"));
-//        // Download the image data as a byte array
-//        final long FIFTEEN_MEGABYTE = 1024 * 15360;
-//        imageRef.getBytes(FIFTEEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//            @Override
-//            public void onSuccess(byte[] bytes) {
-//                // Convert the byte array to a bitmap
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                // Set the bitmap to an profileImage
-//                profileImage.setImageBitmap(bitmap);
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//            }
-//        });
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child("images/" + getIntent().getStringExtra("photo"));
+        // Download the image data as a byte array
+        final long FIFTEEN_MEGABYTE = 1024 * 15360;
+        imageRef.getBytes(FIFTEEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Convert the byte array to a bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                // Set the bitmap to an profileImage
+                profileImage.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+            }
+        });
 
         profileImage.setOnClickListener(view -> {
             Intent intent = new Intent(ViewPoemActivity.this, UserProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -107,22 +118,26 @@ public class ViewPoemActivity extends AppCompatActivity {
         star.setOnClickListener(v -> {
 
         });
-        pauseplay.setOnClickListener(v -> {
-
-        });
         follow.setOnClickListener(v -> {
-
+            if(follow.getText().equals("Follow")){
+                follow.setText("Following");
+            }
+            else if(follow.getText().equals("Following")){
+                follow.setText("Follow");
+            }
         });
         pauseplay.setOnClickListener(v -> {
             if (audioUrl != null) {
                 if (mediaPlayer != null) {
                     if (mediaPlayer.isPlaying()) {
                         mediaPlayer.pause();
-                        Drawable playimg = getResources().getDrawable(R.drawable.play);
+                        Drawable playimg = ContextCompat.getDrawable(ViewPoemActivity.this,R.drawable.play);
                         pauseplay.setImageDrawable(playimg);
                     }
                     else{
                         mediaPlayer.start();
+                        Drawable pauseimg = ContextCompat.getDrawable(ViewPoemActivity.this,R.drawable.pause);
+                        pauseplay.setImageDrawable(pauseimg);
                     }
                 }
                 else {
@@ -131,7 +146,7 @@ public class ViewPoemActivity extends AppCompatActivity {
                     pauseplay.setEnabled(false);
                     pauseplay.setAlpha(0.5F);
                     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                    StorageReference storageReference = firebaseStorage.getReference().child("audios/" + audioUrl);
+                    StorageReference storageReference = firebaseStorage.getReference().child(   "audios/" + audioUrl);
                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -149,8 +164,6 @@ public class ViewPoemActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 pauseplay.setEnabled(true);
                                 pauseplay.setAlpha(1F);
-                                Drawable playimg = getResources().getDrawable(R.drawable.pause);
-                                pauseplay.setImageDrawable(playimg);
 
                             } catch (IOException e) {
                                 Toast.makeText(ViewPoemActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -163,6 +176,8 @@ public class ViewPoemActivity extends AppCompatActivity {
                                     endst = formatTime(duration);
                                     end.setText(endst);
                                     mediaPlayer.start();
+                                    Drawable pauseimg = ContextCompat.getDrawable(ViewPoemActivity.this,R.drawable.pause);
+                                    pauseplay.setImageDrawable(pauseimg);
                                     updateSeekBar(seekBar, start);
                                 }
                             });
@@ -177,6 +192,8 @@ public class ViewPoemActivity extends AppCompatActivity {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             seekBar.setProgress(0);
+                            Drawable playimg = ContextCompat.getDrawable(ViewPoemActivity.this,R.drawable.play);
+                            pauseplay.setImageDrawable(playimg);
                         }
                     });
                 }

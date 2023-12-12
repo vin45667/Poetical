@@ -88,6 +88,9 @@ public class PeelsAdapter extends RecyclerView.Adapter<PeelsAdapter.ViewHolder> 
         holder.title.setText(poemContents.getTitle());
         holder.audiotxt.setText(poemContents.getAudioUrl());
         holder.content.setText(poemContents.getContent());
+        holder.staramt.setText(poemContents.getLikeamount());
+        holder.viewsamt.setText(poemContents.getViewamount());
+        holder.key.setText(poemContents.getPostKey());
         if (poemContents.getVerified().equals("yes")) {
             holder.verif.setVisibility(View.VISIBLE);
         } else {
@@ -138,7 +141,6 @@ public class PeelsAdapter extends RecyclerView.Adapter<PeelsAdapter.ViewHolder> 
                 @Override
                 public void onSuccess(Uri uri) {
                     try {
-
                         String url = uri.toString();
                         mediaPlayer.reset();
                         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -163,6 +165,7 @@ public class PeelsAdapter extends RecyclerView.Adapter<PeelsAdapter.ViewHolder> 
                             endst=formatTime(duration);
                             holder.end.setText(endst);
                             mediaPlayer.start();
+                            increaseViewAmt(holder.key.getText().toString());
                             updateSeekBar(holder.seekBar, holder.start);
                         }
                     });
@@ -179,49 +182,6 @@ public class PeelsAdapter extends RecyclerView.Adapter<PeelsAdapter.ViewHolder> 
                     holder.seekBar.setProgress(0);
                 }
             });
-            //audioRef = storageReference.child("audios/" + holder.audiotxt.getText().toString());
-//                try {
-//                    localFile = File.createTempFile(holder.audiotxt.getText().toString(), "mp3");
-//                    audioRef.getFile(localFile)
-//                            .addOnSuccessListener(taskSnapshot -> {
-//                                try {
-//                                    mediaPlayer = new MediaPlayer();
-//                                    mediaPlayer.setDataSource(localFile.getAbsolutePath());
-//                                    mediaPlayer.prepare();
-//                                    duration= mediaPlayer.getDuration();
-//                                    endst=formatTime(duration);
-//                                    holder.end.setText(endst);
-//                                    holder.seekBar.setMax(duration);
-//                                    mediaPlayer.start();
-//                                    holder.progressBar.setVisibility(View.GONE);
-//                                    holder.pauseplay.setEnabled(true);
-//                                    holder.pauseplay.setAlpha(1F);
-//                                } catch (IOException e) {
-//                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                                    builder.setTitle("Invalid 3").setMessage(e.getMessage()).setPositiveButton("OK", (dialog, id) -> {
-//                                        dialog.cancel();
-//                                    });
-//                                    AlertDialog dialog = builder.create();
-//                                    dialog.show();
-//                                }
-//
-//                            })
-//                            .addOnFailureListener(exception -> {
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                                builder.setTitle("Invalid 2").setMessage(exception.getMessage() + " " + holder.audiotxt.getText()).setPositiveButton("OK", (dialog, id) -> {
-//                                    dialog.cancel();
-//                                });
-//                                AlertDialog dialog = builder.create();
-//                                dialog.show();
-//                            });
-//                } catch (IOException e) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                    builder.setTitle("Invalid 1").setMessage(e.getMessage()).setPositiveButton("OK", (dialog, id) -> {
-//                        dialog.cancel();
-//                    });
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
-//                }
         });
         holder.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -280,12 +240,14 @@ public class PeelsAdapter extends RecyclerView.Adapter<PeelsAdapter.ViewHolder> 
         ConstraintLayout waveLayout;
         ImageView verif, pauseplay, starimg;
         ProgressBar progressBar;
-        TextView name, title, content, email, photo, staramt, follow, audiotxt, start, end;
+        TextView name, title, content, email, photo, staramt, follow, audiotxt, start, end,viewsamt,key;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
+            key=itemView.findViewById(R.id.key);
             start = itemView.findViewById(R.id.starttxt);
+            viewsamt=itemView.findViewById(R.id.viewsamt);
             end = itemView.findViewById(R.id.endtxt);
             profileImage = itemView.findViewById(R.id.profileImage);
             verif = itemView.findViewById(R.id.verif);
@@ -331,23 +293,52 @@ public class PeelsAdapter extends RecyclerView.Adapter<PeelsAdapter.ViewHolder> 
         });
     }
 
-    public void streamAudio(StorageReference storageReference) {
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+    public void increaseViewAmt(String key){
+        DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("All Poems");
+        int incrementValue = 1;
+        postsRef.child(key).child("viewamount").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onSuccess(Uri uri) {
-                try {
-                    String url = uri.toString();
-                    mediaPlayer.reset();
-                    mediaPlayer.setDataSource(url);
-                    mediaPlayer.prepareAsync();
-                } catch (IOException e) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Get the current value
+                    String currentValue = dataSnapshot.getValue(String.class);
+
+                    // Increment the value
+                    int newValue = Integer.parseInt( currentValue) + incrementValue;
+                    // Update the value in the database
+                    postsRef.child(key).child("viewamount").setValue(String.valueOf(newValue));
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "failed to download", Toast.LENGTH_SHORT).show();
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors
             }
         });
+
+    }
+    public void increaseStarAmt(String key){
+        DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("All Poems");
+        int incrementValue = 1;
+        postsRef.child(key).child("likeamount").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Get the current value
+                    String currentValue = dataSnapshot.getValue(String.class);
+
+                    // Increment the value
+                    int newValue = Integer.parseInt( currentValue) + incrementValue;
+                    // Update the value in the database
+                    postsRef.child(key).child("likeamount").setValue(String.valueOf(newValue));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
+
     }
 }

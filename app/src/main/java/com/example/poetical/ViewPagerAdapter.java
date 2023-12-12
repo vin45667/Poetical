@@ -9,6 +9,7 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.text.style.RelativeSizeSpan;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -50,7 +51,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
         String[] tabTitles = {"Home", "Peels", "Settings"}; // Replace with your tab names
 
-        Drawable image = context.getResources().getDrawable(tabIcons[position]);
+        //Drawable image = context.getResources().getDrawable(tabIcons[position]);
+        Drawable image= ContextCompat.getDrawable(context,tabIcons[position]);
         image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
 
         SpannableString spannableString = new SpannableString(" " + tabTitles[position]); // Add space for the icon

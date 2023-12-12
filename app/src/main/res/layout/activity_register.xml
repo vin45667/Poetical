@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".RegisterActivity">
 
     <ScrollView
@@ -124,12 +125,17 @@
                         android:id="@+id/countryCodePicker"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@color/appColor"
+                        app:ccp_arrowColor="@color/white"
+                        app:ccpDialog_textColor="@color/white"
+                        app:ccpDialog_backgroundColor="@color/appColor"
                         android:layout_gravity="center" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_marginBottom="5dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="center">
 
                         <EditText
                             android:id="@+id/input_number"

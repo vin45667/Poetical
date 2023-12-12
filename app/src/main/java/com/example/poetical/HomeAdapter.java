@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.MediaDrm;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,7 +56,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FileOps fileOps = new FileOps(context);
         DataPoems poemContents = poemList.get(position);
-        holder.name.setText(poemContents.getName());
+        holder.name.setText("~By "+poemContents.getName());
         holder.email.setText(poemContents.getEmail());
         holder.photo.setText(poemContents.getPhotoUrl());
         holder.title.setText(poemContents.getTitle());
@@ -111,6 +113,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             intent.putExtra("email", holder.email.getText().toString().trim());
             context.startActivity(intent);
         });
+        holder.like.setOnClickListener(v -> {
+            increaseStarAmt(holder.key.getText().toString());
+            Drawable starfilled= ContextCompat.getDrawable(context,R.drawable.star_filled);
+            Drawable staroutlined= ContextCompat.getDrawable(context,R.drawable.star_outlined);
+
+        });
         holder.layout.setOnClickListener(v -> {
             increaseViewAmt(holder.key.getText().toString());
             Intent intent = new Intent(context, ViewPoemActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -140,7 +148,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView profileImage;
         ConstraintLayout waveLayout;
-        ImageView verif;
+        ImageView verif,like;
         TextView name, title, content, email, photo,verifiedtxt,audiourl,likeamt,viewsamt,type,key;
         ConstraintLayout layout;
 
@@ -149,6 +157,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             name=itemView.findViewById(R.id.name);
             key=itemView.findViewById(R.id.key);
             type=itemView.findViewById(R.id.type);
+            like=itemView.findViewById(R.id.likeimg);
             layout=itemView.findViewById(R.id.layout);
             profileImage = itemView.findViewById(R.id.profileImage);
             verif = itemView.findViewById(R.id.verif);
@@ -203,7 +212,31 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     // Increment the value
                     int newValue = Integer.parseInt( currentValue) + incrementValue;
                     // Update the value in the database
-                    postsRef.child(key).child("viewamount").setValue(newValue);
+                    postsRef.child(key).child("viewamount").setValue(String.valueOf(newValue));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
+
+    }
+    public void increaseStarAmt(String key){
+        DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("All Poems");
+        int incrementValue = 1;
+        postsRef.child(key).child("likeamount").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Get the current value
+                    String currentValue = dataSnapshot.getValue(String.class);
+
+                    // Increment the value
+                    int newValue = Integer.parseInt( currentValue) + incrementValue;
+                    // Update the value in the database
+                    postsRef.child(key).child("likeamount").setValue(String.valueOf(newValue));
                 }
             }
 

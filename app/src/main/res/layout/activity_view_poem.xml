@@ -22,8 +22,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:src="#0F7CD3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -334,7 +334,7 @@
                     android:id="@+id/likeimg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/star_filled" />
+                    android:src="@drawable/star_outlined" />
 
                 <TextView
                     android:id="@+id/likeamount"

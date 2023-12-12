@@ -84,12 +84,12 @@ public class PoxtActivity extends AppCompatActivity {
         dataPoems.setTitle(title);
         dataPoems.setContent(details);
         dataPoems.setPhotoUrl(fileOps.readIntStorage("profileimage.txt"));
+        dataPoems.setPhotoUrl2(fileOps.readIntStorage("coverimage.txt"));
         dataPoems.setAudioUrl("none");
-        dataPoems.setStars("0");
         dataPoems.setLikeamount("0");
         dataPoems.setViewamount("0");
         dataPoems.setType("poxt");
-        dataPoems.setVerified(fileOps.readIntStorage("userverified.txt"));
+        dataPoems.setVerified(fileOps.readIntStorage("userverif.txt"));
         firebaseDatabase=FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference("All Poems");
         String key=databaseReference.push().getKey();
@@ -107,7 +107,7 @@ public class PoxtActivity extends AppCompatActivity {
             }
         };
         databaseReference.addValueEventListener(valueEventListener);
-        Toast.makeText(this, "Poxt uploaded successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Poxt uploaded successfully", Toast.LENGTH_LONG).show();
         this.title.setText("");
         this.details.setText("");
         startActivity(new Intent(this,HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));

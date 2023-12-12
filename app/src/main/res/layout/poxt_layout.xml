@@ -9,8 +9,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImage"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="#0F7CD3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,19 +23,19 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Efe Otega"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="21sp"
+        android:text="~Efe Otega"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintStart_toEndOf="@id/profileImage"
-        app:layout_constraintTop_toTopOf="@+id/profileImage"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/wavelayout"
+        app:layout_constraintVertical_bias="0.1" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginTop="2dp"
         android:id="@+id/verif"
         android:src="@drawable/verifiedicon"
@@ -51,14 +51,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
+        android:textStyle="bold"
         android:text="Poem title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textSize="18sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -68,7 +69,7 @@
         android:maxHeight="70dp"
         android:text="Poem content excerpt..."
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textSize="15sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
@@ -339,14 +340,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wavelayout"
+        app:layout_constraintTop_toBottomOf="@+id/name"
         app:layout_constraintVertical_bias="0.5">
 
         <ImageView
             android:id="@+id/likeimg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/star_filled" />
+            android:src="@drawable/star_outlined" />
 
         <TextView
             android:id="@+id/likeamount"

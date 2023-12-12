@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                                 getUserDetails();
                                 //save all details to users database
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-                            } else if (task.getException().getMessage().contains("There is no user record corresponding to this identifier")) {
+                            } else if (task.getException().getMessage().contains("There is no user record corresponding to this identifier")||task.getException().getMessage().contains("The supplied auth credential is incorrect, malformed or has expired")) {
                                 email.setEnabled(true);
                                 password.setEnabled(true);
                                 email.setAlpha(1F);
